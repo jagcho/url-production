@@ -63,7 +63,7 @@ const createUrl = async function (req, res) {
       const input = { longUrl: longUrl, shortUrl: shortUrl, urlCode: urlCode };
 
       urlData = await urlModel.create(input);
-
+      
       const displayData = { longUrl: urlData.longUrl, shortUrl: urlData.shortUrl, urlCode: urlData.urlCode }
 
       await SET_ASYNC(`${longUrl}`, JSON.stringify(displayData), 'EX', 60*60 )
@@ -85,12 +85,13 @@ const createUrl = async function (req, res) {
 const getUrl = async function (req, res) {
   try {
     let urlCode = req.params.urlCode
+   
     
     if (!shortId.isValid(urlCode)) return res.status(400).send({ status: false, message: "invalid format of the urlCode, i.e. it must be of length>5 & comprised of only[a-zA-Z0-9_-]" })
     let cahcedProfileData = await GET_ASYNC(`${urlCode}`)
     if (cahcedProfileData) {
       //console.log('From cache')
-      return res.status(302).redirect(cahcedProfileData)
+      return res.status(200).send(cahcedProfileData)
     }
     else {
       let urlData = await urlModel.findOne({ urlCode: urlCode });

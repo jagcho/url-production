@@ -3,8 +3,6 @@ const bodyParser = express.json()
 const mongoose = require("mongoose")
 const app = express()
 const route = require("./routes/route")
-const path = require('path')
-const dotenv=require('dotenv')
 
 app.use(bodyParser)
 
@@ -12,18 +10,11 @@ var cors = require('cors')
 
 app.use(cors())
 
-//configure env
-dotenv.config();
 // app.get('/products/:id', function (req, res, next) {
 //   res.json({msg: 'This is CORS-enabled for all origins!'})
 // })
-app.use(express.static(path.join(__dirname,'./client/build')))
 
-app.get('*',function(req,res){
-    res.sendFile(path.join(__dirname,'./client/build/index.html'));
-})
-
-mongoose.connect(process.env.MONGO_URL
+mongoose.connect("mongodb+srv://Jagcho:71nEXJtXcYfVx8T6@cluster0.5bg4mzz.mongodb.net/Url-Shortner"
     , { useNewUrlParser: true })
     .then(() => console.log("MongoDb is connected"))
     .catch(err => console.log(err))
